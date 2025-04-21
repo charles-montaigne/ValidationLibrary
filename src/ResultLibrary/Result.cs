@@ -11,6 +11,9 @@ public abstract record Result<TOk, TError> : IResult<TOk, TError>
     public static Result<TOk, TError> Failure(TError error) => new Failure<TOk, TError>(error);
 
     public abstract T Match<T>(Func<TOk, T> okFunc, Func<TError, T> errorFunc);
+
+    public static implicit operator Result<TOk, TError>(TOk ok) => new Success<TOk, TError>(ok);
+    public static implicit operator Result<TOk, TError>(TError error) => new Failure<TOk, TError>(error);
 }
 
 public record Success<TOk, TError>(TOk Ok) : Result<TOk, TError>

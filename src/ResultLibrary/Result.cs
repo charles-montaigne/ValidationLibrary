@@ -1,4 +1,4 @@
-﻿namespace Result;
+﻿namespace ResultLibrary;
 
 public interface IResult<TOk, TError>
 {

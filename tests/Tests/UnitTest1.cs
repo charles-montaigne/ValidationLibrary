@@ -1,4 +1,4 @@
-﻿using Result;
+﻿using ResultLibrary;
 using ValidationLibrary;
 
 namespace Tests;

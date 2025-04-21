@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Result\Result.csproj" />
+    <ProjectReference Include="..\ResultLibrary\ResultLibrary.csproj" />
   </ItemGroup>
 
 </Project>

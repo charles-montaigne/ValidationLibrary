@@ -9,7 +9,7 @@ public static class ValidationApply
         return new ValidationErrors(errors.AsReadOnly());
     }
 
-    public static Result<R, ValidationErrors> Apply<T1, R>(this Result<Func<T1, R>, ValidationErrors> funcResult, Validation<T1> validation)
+    public static Result<R, ValidationErrors> Apply<T1, R>(this Result<Func<T1, R>, ValidationErrors> funcResult, IResult<T1, ValidationErrors> validation)
     {
         return
             funcResult.Match(
@@ -21,7 +21,7 @@ public static class ValidationApply
                 errorFunc => Result<R, ValidationErrors>.Failure(Combine(errors, errorFunc))));
     }
 
-    public static Result<Func<T2, R>, ValidationErrors> Apply<T1, T2, R>(this Result<Func<T1, T2, R>, ValidationErrors> funcResult, Validation<T1> validation)
+    public static Result<Func<T2, R>, ValidationErrors> Apply<T1, T2, R>(this Result<Func<T1, T2, R>, ValidationErrors> funcResult, IResult<T1, ValidationErrors> validation)
     {
         return
             funcResult.Match(
@@ -33,7 +33,7 @@ public static class ValidationApply
                 errorFunc => Result<Func<T2, R>, ValidationErrors>.Failure(Combine(errors, errorFunc))));
     }
 
-    public static Result<Func<T2, T3, R>, ValidationErrors> Apply<T1, T2, T3, R>(this Result<Func<T1, T2, T3, R>, ValidationErrors> funcResult, Validation<T1> validation)
+    public static Result<Func<T2, T3, R>, ValidationErrors> Apply<T1, T2, T3, R>(this Result<Func<T1, T2, T3, R>, ValidationErrors> funcResult, IResult<T1, ValidationErrors> validation)
     {
         return
             funcResult.Match(

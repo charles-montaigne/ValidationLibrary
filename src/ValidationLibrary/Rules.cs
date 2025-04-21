@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using ResultLibrary;
+using System.Linq.Expressions;
 
 namespace ValidationLibrary;
 public class Rules<T>
@@ -20,6 +21,22 @@ public class Rules<T>
         var propertyValue = expression.Compile().Invoke(_input);
 
         return Validation<TProperty>.Success(property, propertyValue);
+    }
+
+    public Result<TValueObject, ValidationErrors> Complex<TProperty, TValueObject>(
+        Expression<Func<T, TProperty>> expression,
+        Result<Result<TValueObject, Error>, ValidationErrors> complexResult)
+    {
+        return complexResult.Match(
+            result => result.Match<Result<TValueObject, ValidationErrors>>(
+                valueObject => valueObject,
+                error =>
+                {
+                    var propertyName = ((MemberExpression)expression.Body).Member.Name;
+                    var property = _property.WithSubProperty(propertyName);
+                    return new ValidationErrors(new ValidationError(property, error));
+                }),
+            validationErrors => validationErrors);
     }
 }
 

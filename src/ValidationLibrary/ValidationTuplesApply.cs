@@ -18,4 +18,12 @@ public static class ValidationTuplesApply
         return Result<Func<T1, T2, T3, R>, ValidationErrors>.Success(func)
             .Apply(validations.Item1).Apply(validations.Item2).Apply(validations.Item3);
     }
+
+    public static Result<R, ValidationErrors> Apply<T1, T2, T3, T4, R>(
+        this (IResult<T1, ValidationErrors>, IResult<T2, ValidationErrors>, IResult<T3, ValidationErrors>, IResult<T4, ValidationErrors>) validations,
+        Func<T1, T2, T3, T4, R> func)
+    {
+        return Result<Func<T1, T2, T3, T4, R>, ValidationErrors>.Success(func)
+            .Apply(validations.Item1).Apply(validations.Item2).Apply(validations.Item3).Apply(validations.Item4);
+    }
 }

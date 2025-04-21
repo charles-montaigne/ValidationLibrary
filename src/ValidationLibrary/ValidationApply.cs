@@ -41,4 +41,15 @@ public static class ValidationApply
                 t1 => validationErrors1,
                 validationErrors2 => Combine(validationErrors1, validationErrors2)));
     }
+
+    public static Result<Func<T2, T3, T4, R>, ValidationErrors> Apply<T1, T2, T3, T4, R>(this Result<Func<T1, T2, T3, T4, R>, ValidationErrors> funcResult, IResult<T1, ValidationErrors> validation)
+    {
+        return funcResult.Match(
+            okFunc => validation.Match(
+                t1 => Result<Func<T2, T3, T4, R>, ValidationErrors>.Success((t2, t3, t4) => okFunc(t1, t2, t3, t4)),
+                validationErrors => validationErrors),
+            validationErrors1 => validation.Match(
+                t1 => validationErrors1,
+                validationErrors2 => Combine(validationErrors1, validationErrors2)));
+    }
 }

@@ -12,4 +12,8 @@ public record ValidationErrors(ReadOnlyCollection<ValidationError> Errors) : IRe
     public ValidationErrors(ValidationError validationError) : this(new ReadOnlyCollection<ValidationError>([validationError]))
     {
     }
+
+    public ValidationErrors(List<ValidationError> validationErrors) : this(validationErrors.AsReadOnly())
+    {
+    }
 }

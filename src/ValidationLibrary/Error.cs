@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Localization;
+using System.Collections;
 
 namespace ValidationLibrary;
 
-public class Error
+public class Error : IReadOnlyCollection<Error>
 {
     public string Code { get; }
+
+    public int Count => 1;
 
     public Error(string code)
     {
@@ -15,5 +18,15 @@ public class Error
     {
         var localizedString = stringLocalizer.GetString($"{Code}");
         return localizedString.ResourceNotFound ? string.Empty : localizedString;
+    }
+
+    public IEnumerator<Error> GetEnumerator()
+    {
+        yield return this;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        yield return this;
     }
 }

@@ -1,12 +1,12 @@
 ﻿using ResultLibrary;
 
 namespace ValidationLibrary;
-public static class ValidationTuplesApply
+public static class ValidationApplyFromTuple
 {
     private static Result<T, ValidationErrors> ToResult<T>(T value) => Result<T, ValidationErrors>.Success(value);
 
     public static Result<R, ValidationErrors> Apply<T1, T2, R>(
-        this (Validation<T1>, Validation<T2>) validations,
+        this (IResult<T1, ValidationErrors>, IResult<T2, ValidationErrors>) validations,
         Func<T1, T2, R> func)
     {
         return ToResult(func)

@@ -9,7 +9,7 @@ public static class ValidationApply
         return new ValidationErrors(errors.AsReadOnly());
     }
 
-    public static Result<R, ValidationErrors> Apply<T1, R>(this Result<Func<T1, R>, ValidationErrors> funcResult, IResult<T1, ValidationErrors> validation)
+    public static Result<R, ValidationErrors> Apply<T1, R>(this IResult<Func<T1, R>, ValidationErrors> funcResult, IResult<T1, ValidationErrors> validation)
     {
         return funcResult.Match(
             okFunc => validation.Match(

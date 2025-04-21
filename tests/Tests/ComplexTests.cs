@@ -3,7 +3,7 @@ using ValidationLibrary;
 
 namespace Tests;
 
-public class UnitTest1
+public class ComplexTests
 {
     [Fact]
     public void Test1()
@@ -11,40 +11,38 @@ public class UnitTest1
         var request = new Request(Guid.NewGuid(), 1, "hello", new DateTime(2025, 01, 01), new DateTime(2025, 12, 25));
         var rules = Rules.ForJson(request);
 
-        var commandResult = 
+        var commandResult =
             (rules.For(x => x.Id).NotNull(),
-            rules.For(x => x.Number).NotNull(),
-            rules.For(x => x.Label).NotNull(),
             rules.Complex(x => x.Start,
                 (rules.For(x => x.Start).NotNull(),
                 rules.For(x => x.End).NotNull())
-                .Apply(Period.Create)))
-            .Apply((id, number, label, period) => new Command(id, number, label, period));
+                .Apply(ComplexTestsPeriod.Create)))
+            .Apply((id, period) => new ComplexTestsCommand(id, period));
 
         Assert.IsType<Success<Command, ValidationErrors>>(commandResult);
     }
 }
 
-public record Request(Guid? Id, int? Number, string? Label, DateTime? Start, DateTime? End);
-public record Command(Guid Id, int Number, string Label, Period Period);
+public record ComplexTestsRequest(Guid? Id, DateTime? Start, DateTime? End);
+public record ComplexTestsCommand(Guid Id, ComplexTestsPeriod Period);
 
-public class Period
+public class ComplexTestsPeriod
 {
     public DateTime Start { get; }
     public DateTime End { get; }
 
-    private Period(DateTime start, DateTime end)
+    private ComplexTestsPeriod(DateTime start, DateTime end)
     {
         Start = start;
         End = end;
     }
 
-    public static Result<Period, Error> Create(DateTime start, DateTime end)
+    public static Result<ComplexTestsPeriod, Error> Create(DateTime start, DateTime end)
     {
         if (start > end)
             return InvalidPeriod.Instance;
 
-        return new Period(start, end);
+        return new ComplexTestsPeriod(start, end);
     }
 
     public class InvalidPeriod : Error

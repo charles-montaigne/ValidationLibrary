@@ -8,4 +8,8 @@ public record ValidationErrors(ReadOnlyCollection<ValidationError> Errors) : IRe
     public int Count => Errors.Count;
     public IEnumerator<ValidationError> GetEnumerator() => Errors.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public ValidationErrors(ValidationError validationError) : this(new ReadOnlyCollection<ValidationError>([validationError]))
+    {
+    }
 }
